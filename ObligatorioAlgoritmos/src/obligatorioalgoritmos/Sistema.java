@@ -79,9 +79,29 @@ public class Sistema implements ISistema {
         miDC.setCapacidadCPUenHoras(capacidadCPUenHoras);
         miDC.setCostoCPUxHora(costoCPUporHora);
         
+        
+        
         return retorno;
     }
-
+    public int obtenerUltimoPunto(){
+    	for(i=0; i <= (Puntos.length -1) ;i++)
+        {
+            if(Puntos[i] != null)
+            {
+                if(Puntos[i].getCoordX() == coordX && Puntos[i].getCoordY()== coordY)
+                {
+                    return new Retorno(Resultado.ERROR_3);
+                }
+            }
+            else
+            {
+                Puntos[i] = dc;
+                i = Puntos.length;
+                Estado = true;
+            }
+        }
+    	
+    }
     @Override
     public Retorno registrarTramo(Double coordXi, Double coordYi,
             Double coordXf, Double coordYf, int peso) {
