@@ -86,18 +86,9 @@ public class Sistema implements ISistema {
     public int obtenerUltimoPunto(){
     	for(i=0; i <= (Puntos.length -1) ;i++)
         {
-            if(Puntos[i] != null)
+            if(Puntos[i] == null)
             {
-                if(Puntos[i].getCoordX() == coordX && Puntos[i].getCoordY()== coordY)
-                {
-                    return new Retorno(Resultado.ERROR_3);
-                }
-            }
-            else
-            {
-                Puntos[i] = dc;
-                i = Puntos.length;
-                Estado = true;
+               return Puntos[i-1];
             }
         }
     	
