@@ -65,5 +65,15 @@ public class ArbolEmpresa {
     public boolean isEmpty(){
         return this.raiz == null;
     }
+    public void imprimirInOrder (NodoEmpresa a){
+        //a=raiz
+        if(a!=null){
+            imprimirInOrder(a.izq);
+            System.out.println(a.empresa.getNombre()+" "+a.getEmpresa().geteMail_contacto());
+            imprimirInOrder(a.der);
+        }
+    }
+    
+    
     
 }

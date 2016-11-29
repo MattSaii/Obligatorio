@@ -501,8 +501,8 @@ public class MainFrame extends javax.swing.JFrame {
         agregarEmpresa = new javax.swing.JButton();
         jScrollPane7 = new javax.swing.JScrollPane();
         consolaEmpresa = new javax.swing.JTextArea();
-        EmpColorChooser = new javax.swing.JColorChooser();
         jButton1 = new javax.swing.JButton();
+        empresaColorCombo = new javax.swing.JComboBox();
         jPanel7 = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
@@ -518,7 +518,7 @@ public class MainFrame extends javax.swing.JFrame {
         JText_CD_Long1 = new javax.swing.JTextField();
         jLabel27 = new javax.swing.JLabel();
         txtCostoDC = new javax.swing.JTextField();
-        jButton3 = new javax.swing.JButton();
+        registrarDC = new javax.swing.JButton();
         txtCapaciDC = new javax.swing.JTextField();
         jScrollPane8 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
@@ -886,6 +886,13 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        empresaColorCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Amarillo", "Rojo", "Azul", "Verde" }));
+        empresaColorCombo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                empresaColorComboActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -907,16 +914,12 @@ public class MainFrame extends javax.swing.JFrame {
                                     .addComponent(jLabel7)
                                     .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addGap(10, 10, 10)
-                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(txtPais, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(txtDir, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(txtMail, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(EmpColorChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 424, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGap(10, 10, 10)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtPais, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
+                                    .addComponent(txtDir, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
+                                    .addComponent(txtMail, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
+                                    .addComponent(empresaColorCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGap(8, 8, 8)
                                 .addComponent(jLabel5)
@@ -926,7 +929,7 @@ public class MainFrame extends javax.swing.JFrame {
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(agregarEmpresa, javax.swing.GroupLayout.DEFAULT_SIZE, 186, Short.MAX_VALUE))))
-                        .addGap(4, 4, 4)))
+                        .addGap(105, 105, 105)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -960,9 +963,9 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel13)
-                    .addComponent(EmpColorChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(empresaColorCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 186, Short.MAX_VALUE)
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -1009,7 +1012,12 @@ public class MainFrame extends javax.swing.JFrame {
 
         txtCostoDC.setEditable(false);
 
-        jButton3.setText("Agregar Data Center");
+        registrarDC.setText("Agregar Data Center");
+        registrarDC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                registrarDCActionPerformed(evt);
+            }
+        });
 
         txtCapaciDC.setEditable(false);
 
@@ -1024,39 +1032,32 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel14)
+                        .addComponent(jLabel15)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 477, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(buscarCiudadDC, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(registrarDC, javax.swing.GroupLayout.DEFAULT_SIZE, 477, Short.MAX_VALUE)
                         .addGroup(jPanel7Layout.createSequentialGroup()
-                            .addContainerGap()
-                            .addComponent(jLabel14))
-                        .addGroup(jPanel7Layout.createSequentialGroup()
-                            .addContainerGap()
-                            .addComponent(jLabel15))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
-                            .addContainerGap()
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 477, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(buscarCiudadDC, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 477, Short.MAX_VALUE)
-                            .addGroup(jPanel7Layout.createSequentialGroup()
-                                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(JText_CD_Long1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel16)
-                                    .addComponent(JText_CD_Lati1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel17)
-                                    .addComponent(jLabel24)
-                                    .addComponent(txtCapaciDC, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(115, 115, 115)
-                                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jLabel27)
-                                    .addComponent(jLabel23)
-                                    .addComponent(txtNombreDC, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
-                                    .addComponent(jLabel18)
-                                    .addComponent(txtCostoDC, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
-                                    .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                            .addComponent(jScrollPane8))))
+                            .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(JText_CD_Long1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel16)
+                                .addComponent(JText_CD_Lati1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel17)
+                                .addComponent(jLabel24)
+                                .addComponent(txtCapaciDC, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(115, 115, 115)
+                            .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jLabel27)
+                                .addComponent(jLabel23)
+                                .addComponent(txtNombreDC, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+                                .addComponent(jLabel18)
+                                .addComponent(txtCostoDC, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+                                .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(jScrollPane8)))
                 .addContainerGap(28, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
@@ -1095,7 +1096,7 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(txtCostoDC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtCapaciDC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(27, 27, 27)
-                .addComponent(jButton3)
+                .addComponent(registrarDC)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -1792,8 +1793,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_JText_CD_DirecActionPerformed
 
     private void agregarCiudadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarCiudadActionPerformed
-       consolaCiudad.setText(Sistema.registrarCiudad(JText_CD_DireEnc.getText(),Double.parseDouble(JText_CD_Lati.getText()),Double.parseDouble(JText_CD_Long.getText())).resultado.toString());
-       
+       consolaCiudad.setText(Sistema.registrarCiudad(JText_CD_Direc.getText(),Double.parseDouble(JText_CD_Lati.getText()),Double.parseDouble(JText_CD_Long.getText())).resultado.toString());
     }//GEN-LAST:event_agregarCiudadActionPerformed
 
     private void eliminarCiudadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarCiudadActionPerformed
@@ -1801,7 +1801,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_eliminarCiudadActionPerformed
 
     private void agregarEmpresaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarEmpresaActionPerformed
-        consolaEmpresa.setText(Sistema.registrarEmpresa(txtNombre.getText(),txtDir.getText(),txtPais.getText(),txtMail.getText(),EmpColorChooser.getToolTipText()).resultado.toString());
+        consolaEmpresa.setText(Sistema.registrarEmpresa(txtNombre.getText(),txtDir.getText(),txtPais.getText(),txtMail.getText(),empresaColorCombo.getSelectedItem().toString()).resultado.toString());
     }//GEN-LAST:event_agregarEmpresaActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -1820,6 +1820,14 @@ public class MainFrame extends javax.swing.JFrame {
         } catch (Exception ex) {
         }
     }//GEN-LAST:event_buscarCiudadDCActionPerformed
+
+    private void registrarDCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registrarDCActionPerformed
+        jTextArea1.setText(Sistema.registrarDC(txtNombreDC.getText(),Double.parseDouble(JText_CD_Lati1.getText()), Double.parseDouble(JText_CD_Long1.getText()),jComboBox1.getSelectedItem().toString(),Integer.parseInt(txtCapaciDC.getText()),Integer.parseInt(txtCostoDC.getText())).resultado.toString());
+    }//GEN-LAST:event_registrarDCActionPerformed
+
+    private void empresaColorComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_empresaColorComboActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_empresaColorComboActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1858,7 +1866,6 @@ public class MainFrame extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JColorChooser EmpColorChooser;
     private javax.swing.JButton IniciarSistema;
     private javax.swing.JButton JButton_ME_Buscar;
     private javax.swing.JButton JButton_ME_Buscar1;
@@ -1908,8 +1915,8 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTextArea consolaSistema;
     private javax.swing.JButton destruirSistema;
     private javax.swing.JButton eliminarCiudad;
+    private javax.swing.JComboBox empresaColorCombo;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton_Peticiones;
     private javax.swing.JButton jButton_Peticiones1;
@@ -1978,6 +1985,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTable jTable_Ruta_Tramos;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JButton registrarDC;
     private javax.swing.JTextField txtCapaciDC;
     private javax.swing.JTextField txtCostoDC;
     private javax.swing.JTextField txtDir;
