@@ -10,35 +10,31 @@ public class ArbolEmpresa {
     NodoEmpresa raiz;
     Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
 
+    public void ArbolEmpresa() {
+        NodoEmpresa raiz = new NodoEmpresa();
+    }
+
     public Retorno agregarEmpresa(Empresa empresa) {
-        NodoEmpresa nuevo = new NodoEmpresa(empresa);
+
         Retorno r = new Retorno(Resultado.OK);
 
         Matcher mather = pattern.matcher(empresa.geteMail_contacto());
 
         if (mather.find() == true) {
             if (raiz == null) {
+                NodoEmpresa nuevo = new NodoEmpresa(empresa);
+                nuevo.empresa = empresa;
+                nuevo.der = new ArbolEmpresa();
+                nuevo.izq = new ArbolEmpresa();
                 raiz = nuevo;
-            } else {
-                NodoEmpresa aux = raiz;
-                NodoEmpresa ant = raiz;
-                while (aux != null) {
-                    ant = aux;
-                    if (aux.empresa.getNombre().compareTo(empresa.getNombre()) < 1) {
-                        aux = aux.der;
-                    } else if (aux.empresa.getNombre().compareTo(empresa.getNombre()) == 0) {
-                        r = new Retorno(Resultado.ERROR_2);
-                    } else {
-                        aux = aux.izq;
-                    }
-                }
 
-                if (ant.empresa.getNombre().compareTo(empresa.getNombre()) < 1) {
-                    ant.der = nuevo;
-                } else if (aux.empresa.getNombre().compareTo(empresa.getNombre()) == 0) {
+            } else {
+                if (raiz.empresa.getNombre().compareTo(empresa.getNombre()) < 1) {
+                    (raiz.der).agregarEmpresa(empresa);
+                } else if (raiz.empresa.getNombre().compareTo(empresa.getNombre()) == 0) {
                     r = new Retorno(Resultado.ERROR_2);
                 } else {
-                    ant.izq = nuevo;
+                    (raiz.izq).agregarEmpresa(empresa);
                 }
             }
 
@@ -47,33 +43,39 @@ public class ArbolEmpresa {
         }
         return r;
     }
-    public Empresa darEmpresa(String nombre) {
-        return buscar(nombre, raiz);
+
+    public ArbolEmpresa buscarEmpresa(String llave) {
+        ArbolEmpresa arbol = null;
+        if (raiz != null) {
+            if (raiz.getEmpresa().getNombre().compareTo(llave) == 0) {
+                return this;
+            }
+            else {
+                if (raiz.getEmpresa().getNombre().compareTo(llave) < 1) {
+                    arbol = raiz.der.buscarEmpresa(llave);
+                } else {
+                    arbol = raiz.izq.buscarEmpresa(llave);
+                }
+                return null; // Solo para evitar el error en compilacion
+            }
+        }
+        return arbol;
     }
 
-    public Empresa buscar(String llave, NodoEmpresa nodo) {
-        if (nodo == null) {
-            //fatalError("La llave " + llave + " no existe en el arreglo");
-        } else if (nodo.getEmpresa().getNombre().compareTo(llave)==0) {
-            return nodo.empresa;
-        } else if (nodo.getEmpresa().getNombre().compareTo(llave)<1) {
-            return buscar(llave, nodo.izq);
-        } else {
-            return buscar(llave, nodo.der);
-        }
-        return null; // Solo para evitar el error en compilacion
-    }
-    public boolean isEmpty(){
+    public boolean isEmpty() {
         return this.raiz == null;
     }
-    public void imprimirInOrder (NodoEmpresa a){
-        //a=raiz
-        if(a!=null){
-            imprimirInOrder(a.izq);
-            System.out.println(a.empresa.getNombre()+" "+a.getEmpresa().geteMail_contacto());
-            imprimirInOrder(a.der);
+
+    public Retorno imprimirInOrder() {
+        Retorno r = new Retorno(Resultado.OK);
+        if (raiz != null) {
+            raiz.izq.imprimirInOrder();
+            System.out.println(raiz.empresa.getNombre() + " " + raiz.getEmpresa().geteMail_contacto());
+            raiz.izq.imprimirInOrder();
         }
+        return r;
     }
+<<<<<<< HEAD
     
 }
    
@@ -84,3 +86,7 @@ public class ArbolEmpresa {
     
     
 
+=======
+
+}
+>>>>>>> 6da219f26245db5bd73c484d0d9315348e583fb5

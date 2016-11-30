@@ -1,5 +1,11 @@
 package obligatorioalgoritmos;
 
+import java.awt.Desktop;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import obligatorioalgoritmos.Retorno.Resultado;
 
 public class Sistema implements ISistema {
@@ -16,6 +22,7 @@ public class Sistema implements ISistema {
         } else {
             Puntos = new Punto[cantPuntos];
             tramos = new NodoTramo[cantPuntos];
+            arbolE= new ArbolEmpresa();
             return new Retorno(Resultado.OK);
         }
     }
@@ -36,8 +43,9 @@ public class Sistema implements ISistema {
         miEmpresa.setPais(pais);
         miEmpresa.seteMail_contacto(email_contacto);
         miEmpresa.setColor(color);
-
-        return arbolE.agregarEmpresa(miEmpresa);
+        
+        retorno=arbolE.agregarEmpresa(miEmpresa);
+        return retorno;
 
     }
 
@@ -78,7 +86,7 @@ public class Sistema implements ISistema {
         miDC.setX(coordX);
         miDC.setY(coordY);
 
-        miDC.setEmpresaPropietaria(arbolE.darEmpresa(empresa));
+        miDC.setEmpresaPropietaria(arbolE.buscarEmpresa(empresa).raiz.getEmpresa());
         miDC.setCapacidadCPUenHoras(capacidadCPUenHoras);
         miDC.setCostoCPUxHora(costoCPUporHora);
 
@@ -218,19 +226,150 @@ public class Sistema implements ISistema {
             Double coordXf, Double coordYf) {
       //Recorre array de tramo y de puntos 
         //recorrer los nodosSig
-        return new Retorno(Resultado.NO_IMPLEMENTADA);
+         if(!checkPuntos(coordXi, coordYi) || !checkPuntos(coordXf, coordYf)){
+            return new Retorno(Resultado.ERROR_1);
+        }
+        else if(!checkTramo(coordXi, coordYi, coordXf, coordYf) || !checkTramo(coordXf, coordYf, coordXi, coordYi)){
+            // No hay tramos registrados
+            return new Retorno(Resultado.ERROR_2);
+        }
+        else{
+            int pos = darPosXCoord(coordXi, coordYi);
+            NodoTramo aux = tramos[pos];
+            NodoTramo auxAnterior = aux;
+            boolean seguir = true;
+
+            Punto punto = aux.getPunto();
+            
+            if(punto.getX()== coordXf && punto.getY()== coordYf){
+                tramos[pos] = aux.getNodoSig();
+            }
+            else{
+                while(aux.getNodoSig()!= null && seguir){
+                    punto = aux.getPunto();
+                    if(punto.getX()== coordXf && punto.getY()== coordYf){
+                        auxAnterior.setNodoSig(aux.getNodoSig());
+                        seguir = false;
+                    }
+                    auxAnterior = aux;
+                    aux = aux.getNodoSig();
+                }
+                if(seguir){
+                    punto = aux.getPunto();
+                    if(punto.getX()== coordXf && punto.getY()== coordYf){
+                        auxAnterior.setNodoSig(null);
+                    }
+                }
+            }
+
+            //------------Viceversa--------------
+
+            int posVice = darPosXCoord(coordXf, coordYf);
+            NodoTramo auxVice = tramos[posVice];
+            NodoTramo auxAnteriorVice = auxVice;
+            boolean seguirVice = true;
+
+            Punto puntoVice = auxVice.getPunto();
+            
+            if(puntoVice.getX()== coordXi && puntoVice.getY()== coordYi){
+                tramos[posVice] = auxVice.getNodoSig();
+            }
+            else{
+                while(auxVice.getNodoSig()!= null && seguirVice){
+                    puntoVice = auxVice.getPunto();
+                    if(puntoVice.getX()== coordXi && puntoVice.getY()== coordYi){
+                        auxAnteriorVice.setNodoSig(auxVice.getNodoSig());
+                        seguirVice = false;
+                    }
+                    auxAnteriorVice = auxVice;
+                    auxVice = auxVice.getNodoSig();
+                }
+                if(seguirVice){
+                    puntoVice = auxVice.getPunto();
+                    if(puntoVice.getX()== coordXi && puntoVice.getY()== coordYi){
+                        auxAnteriorVice.setNodoSig(null);
+                    }
+                }
+            }
+
+            return new Retorno(Resultado.OK);
+        }
     }
 
     @Override
     public Retorno eliminarPunto(Double coordX, Double coordY) {
-        // TODO Auto-generated method stub
-        return new Retorno(Resultado.NO_IMPLEMENTADA);
+  Retorno r = new Retorno(Resultado.ERROR_1);
+        boolean estado = true;
+        int i;
+            int pos = darPosXCoord(coordX, coordY);
+            NodoTramo tramo = tramos[pos];
+            
+            while(tramo.getNodoSig()!= null){
+                Punto punto = tramo.getPunto();
+                eliminarTramo(punto.getX(), punto.getY(), coordX, coordY);
+                tramo = tramo.getNodoSig();
+            }
+            Punto punto = tramo.getPunto();
+            eliminarTramo(punto.getX(), punto.getY(), coordX, coordY);
+
+            tramos[pos] = null;
+            
+        for(i=0; i <= (Puntos.length -1) ;i++)
+        {
+            if(Puntos[i] != null)
+            {
+             if(Puntos[i].getX()== coordX && Puntos[i].getY()== coordY)
+             {  
+                Puntos[i] = Puntos[i + 1];
+                r = new Retorno(Resultado.OK);
+                estado = false;
+             }
+             if(!estado)
+             {
+                 Puntos[i] = Puntos[i + 1];
+             }
+            }
+        }
+        return r;        
     }
 
     @Override
     public Retorno mapaEstado() {
         // TODO Auto-generated method stub
-        return new Retorno(Resultado.NO_IMPLEMENTADA);
+        if(Puntos != null){
+            String defaultUrl = "http://maps.google.com/maps/api/staticmap?center=Golfo+de+Guinea&zoom=1&size=512x512&maptype=roadmap";
+            String pipe = "%7C";    // |
+
+            for(Punto p : Puntos){
+                if(p != null){
+                    String color;
+                    if(p instanceof DataCenter){
+                        DataCenter dc = (DataCenter)p;
+                        Empresa empresa = arbolE.buscarEmpresa(dc.getEmpresaPropietaria().getNombre()).raiz.getEmpresa();
+
+                        color = String.format("%s", empresa.getColor());
+                    }
+                    else{
+                        color = String.format("%s", "yellow");
+
+                        // Preguntar si DC deben tener el color de la empresa. YA ESTA HECHO
+                    }
+                    String x = String.format("%.6f", p.getX());
+                    String y = String.format("%.6f",  p.getY());
+
+                    String result = "&markers=color:" + color + pipe + x + "," + y;
+
+                    defaultUrl += result;
+                }
+            }
+
+            try {
+                Desktop.getDesktop().browse(new URL(defaultUrl).toURI());
+            } catch (IOException | URISyntaxException ex) {
+                Logger.getLogger(Sistema.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return new Retorno(Resultado.OK);
     }
 
     @Override
@@ -249,7 +388,7 @@ public class Sistema implements ISistema {
     @Override
     public Retorno listadoEmpresas() {
         // TODO Auto-generated method stub
-        return new Retorno(Resultado.NO_IMPLEMENTADA);
+        return arbolE.imprimirInOrder();
     }
     
     
