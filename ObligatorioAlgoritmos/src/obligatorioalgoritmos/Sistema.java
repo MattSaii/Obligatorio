@@ -5,7 +5,7 @@ import obligatorioalgoritmos.Retorno.Resultado;
 public class Sistema implements ISistema {
 
     private Punto[] Puntos;
-    private ArbolEmpresa arbolE;
+    private ArbolEmpresa arbolE = new ArbolEmpresa();
     private Retorno retorno;
     private NodoTramo[] tramos;
 
@@ -251,5 +251,6 @@ public class Sistema implements ISistema {
         // TODO Auto-generated method stub
         return new Retorno(Resultado.NO_IMPLEMENTADA);
     }
-
+    
+    
 }
