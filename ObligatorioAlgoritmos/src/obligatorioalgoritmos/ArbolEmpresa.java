@@ -75,18 +75,5 @@ public class ArbolEmpresa {
         }
         return r;
     }
-<<<<<<< HEAD
     
 }
-   
-    
-    
-    
-    
-    
-    
-
-=======
-
-}
->>>>>>> 6da219f26245db5bd73c484d0d9315348e583fb5
