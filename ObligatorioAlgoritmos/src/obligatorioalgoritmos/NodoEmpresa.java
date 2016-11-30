@@ -4,8 +4,8 @@ package obligatorioalgoritmos;
 public class NodoEmpresa {
     
     Empresa empresa;
-    NodoEmpresa izq;
-    NodoEmpresa der;
+    ArbolEmpresa izq;
+    ArbolEmpresa der;
     
 
     public Empresa getEmpresa() {
@@ -16,19 +16,19 @@ public class NodoEmpresa {
         this.empresa = empresa;
     }
 
-    public NodoEmpresa getIzq() {
+    public ArbolEmpresa getIzq() {
         return izq;
     }
 
-    public void setIzq(NodoEmpresa izq) {
+    public void setIzq(ArbolEmpresa izq) {
         this.izq = izq;
     }
 
-    public NodoEmpresa getDer() {
+    public ArbolEmpresa getDer() {
         return der;
     }
 
-    public void setDer(NodoEmpresa der) {
+    public void setDer(ArbolEmpresa der) {
         this.der = der;
     }
 
@@ -38,7 +38,7 @@ public class NodoEmpresa {
     
     
     
-    public NodoEmpresa(Empresa empresa, NodoEmpresa izq, NodoEmpresa der) {
+    public NodoEmpresa(Empresa empresa, ArbolEmpresa izq, ArbolEmpresa der) {
         this.empresa = empresa;
         this.izq = izq;
         this.der = der;
