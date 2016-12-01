@@ -7,6 +7,7 @@ import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import obligatorioalgoritmos.Retorno.Resultado;
+import org.omg.CORBA.DATA_CONVERSION;
 
 public class Sistema implements ISistema {
 
@@ -33,6 +34,9 @@ public class Sistema implements ISistema {
         System.gc();
         return new Retorno(Resultado.OK);
     }
+    public Punto[] getCantPuntos(){
+        return Puntos;
+    }
 
     @Override
     public Retorno registrarEmpresa(String nombre, String direccion, String pais, String email_contacto, String color) {
@@ -51,33 +55,66 @@ public class Sistema implements ISistema {
 
     @Override
     public Retorno registrarCiudad(String nombre, Double coordX, Double coordY) {
-
-        Ciudad miCiudad = new Ciudad();
-        miCiudad.setNombre(nombre);
-        miCiudad.setX(coordX);
-        miCiudad.setY(coordY);
-        if (Puntos[Puntos.length - 1] == null) {
-            for (int i = 0; i > Puntos.length - 1; i++) {
-                if (Puntos[i] == null) {
-                    Puntos[i] = miCiudad;
-                    i = Puntos.length;
-                    retorno = new Retorno(Resultado.OK);
+            Ciudad ciudad = new Ciudad();
+            boolean Estado = false;         
+            for(int i=0; i <= ((Puntos.length)-1);i++)
+            {   
+                if(Puntos[i] != null)
+                {
+                  if(Puntos[i].getX() == coordX && Puntos[i].getY()==coordY)
+                  {
+                      return new Retorno(Resultado.ERROR_2);
+                  }
                 }
-                if (Puntos[i] != null) {
-                    if (Puntos[i].getX() == coordX && Puntos[i].getY() == coordY) {
-                        i = Puntos.length;
-                        retorno = new Retorno(Resultado.ERROR_2);
+                else
+                {
+                Puntos[i] = ciudad;
+                NodoTramo n = new NodoTramo();
+                n.punto = ciudad;
+                tramos[i] = n;
+                i = Puntos.length;
+                Estado = true;
+                }
+            }
+            if(Estado)
+            {
+                return new Retorno(Resultado.OK);
+            }
+            else
+            {
+               return new Retorno(Resultado.ERROR_1); 
+            }   
+    }
+    
+    public Ciudad darCiudad(double x, double y ){
+        int i;
+        Ciudad c = new Ciudad();
+        for (i = 0; i <=(Puntos.length -1); i++) {
+            if(Puntos[i] != null){
+                if(Puntos[i] instanceof Ciudad){
+                    if(Puntos[i].getX() == x && Puntos[i].getY() == y){
+                        c = (Ciudad) Puntos[i];
                     }
                 }
-
             }
-        } else {
-            retorno = new Retorno(Resultado.ERROR_1);
         }
-        return retorno;
-
+        return c;
     }
-
+    public DataCenter darDataCenter(double x, double y ){
+        int i;
+        DataCenter d = new DataCenter();
+        for (i = 0; i <=(Puntos.length -1); i++) {
+            if(Puntos[i] != null){
+                if(Puntos[i] instanceof DataCenter){
+                    if(Puntos[i].getX() == x && Puntos[i].getY() == y){
+                        d = (DataCenter) Puntos[i];
+                    }
+                }
+            }
+        }
+        return d;
+    }
+    
     @Override
     public Retorno registrarDC(String nombre, Double coordX, Double coordY, String empresa, int capacidadCPUenHoras, int costoCPUporHora) {
 
@@ -390,6 +427,13 @@ public class Sistema implements ISistema {
         // TODO Auto-generated method stub
         return arbolE.imprimirInOrder();
     }
+    public String listadoComboBoxEmpresa() {
+            StringBuilder string = new StringBuilder();
+            return arbolE.listadoComboBoxEmpresa(string).toString();
+	}
+    @Override
+    public String magico(){
+        return arbolE.listarEmpresa();
     
-    
+    }
 }

@@ -33,6 +33,8 @@ public interface ISistema {
 	Retorno listadoRedMinima();
 	
 	Retorno listadoEmpresas();
+
+    public Object magico();
 	
 	
 	

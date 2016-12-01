@@ -61,11 +61,18 @@ public class ArbolEmpresa {
         }
         return arbol;
     }
-
-    public boolean isEmpty() {
-        return this.raiz == null;
+    public StringBuilder listadoEmpresas(StringBuilder string)
+    {
+        if(raiz != null){
+            raiz.izq.listadoEmpresas(string);
+            
+            string.append(raiz.empresa.getNombre() + " ; " + raiz.empresa.geteMail_contacto() + " | ");  
+            
+            raiz.der.listadoEmpresas(string);
+        }
+        
+        return string;
     }
-
     public Retorno imprimirInOrder() {
         Retorno r = new Retorno(Resultado.OK);
         if (raiz != null) {
@@ -74,6 +81,28 @@ public class ArbolEmpresa {
             raiz.izq.imprimirInOrder();
         }
         return r;
+    }
+    public String listarEmpresa() {
+        String r =new String();
+        if (raiz != null) {
+            raiz.izq.imprimirInOrder();
+            r=raiz.empresa.getNombre() + " " + raiz.getEmpresa().geteMail_contacto();
+            raiz.izq.imprimirInOrder();
+        }
+        return r;
+    }
+    public StringBuilder listadoComboBoxEmpresa(StringBuilder string)
+    {
+        if(raiz!=null){
+            raiz.izq.listadoComboBoxEmpresa(string);
+            
+            string.append("-"+raiz.empresa.getNombre());  
+            
+            raiz.der.listadoComboBoxEmpresa(string);
+        }
+        
+        return string;
+
     }
     
 }

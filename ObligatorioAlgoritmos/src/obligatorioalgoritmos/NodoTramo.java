@@ -10,9 +10,9 @@ package obligatorioalgoritmos;
  * @author user
  */
 public class NodoTramo {
-    private int peso;
-    private Punto punto;
-    private NodoTramo nodoSig;
+    int peso;
+    Punto punto;
+    NodoTramo nodoSig;
 
     public int getPeso() {
         return peso;

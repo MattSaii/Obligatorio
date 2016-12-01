@@ -68,6 +68,65 @@ public class MainFrame extends javax.swing.JFrame {
     private StaticMaps ObjStaticMaps=new StaticMaps();
     private Places ObjPlaces=new Places();
     
+    private void cargarComboBoxColores() {
+        empresaColorCombo.removeAllItems();
+        final DefaultComboBoxModel modeloColores = new DefaultComboBoxModel();
+                modeloColores.addElement(new ItemComboBox("Amarillo",0));
+                modeloColores.addElement(new ItemComboBox("Azul",1));
+                modeloColores.addElement(new ItemComboBox("Negro",2));
+                modeloColores.addElement(new ItemComboBox("Marron",3));
+                modeloColores.addElement(new ItemComboBox("Verde",4));
+                modeloColores.addElement(new ItemComboBox("Blanco",5));
+                modeloColores.addElement(new ItemComboBox("Rojo",6));
+                modeloColores.addElement(new ItemComboBox("Violeta",7));
+                modeloColores.addElement(new ItemComboBox("Naranja",8));
+                
+        empresaColorCombo.setModel(modeloColores);
+    }
+    
+    private void cargarComboBoxPuntos() {
+        comboOrigen.removeAllItems();
+        comboDestino.removeAllItems();
+        final DefaultComboBoxModel modeloOrigen = new DefaultComboBoxModel();
+        final DefaultComboBoxModel modeloDestino = new DefaultComboBoxModel();
+        Punto[] puntos = sistema.getCantPuntos();
+
+        for (int i = 0; i < puntos.length; i++) {
+            String s = new String();
+            if (puntos[i] instanceof Ciudad) {
+                s = new StringBuilder("Ciudad :" + sistema.darCiudad(puntos[i].getX(), puntos[i].getY()).getNombre()).toString();
+                modeloOrigen.addElement(new ItemComboBox(s,i));
+                modeloDestino.addElement(new ItemComboBox(s,i));
+            }
+            if (puntos[i] instanceof DataCenter) {
+                s = new StringBuilder("DC :" + sistema.darDataCenter(puntos[i].getX(), puntos[i].getY()).getNombre()).toString();
+                modeloOrigen.addElement(new ItemComboBox(s, i));
+                modeloDestino.addElement(new ItemComboBox(s,i));
+            } else {
+
+            }
+            
+        }
+        comboOrigen.setModel(modeloOrigen);
+        comboDestino.setModel(modeloDestino);
+    }
+    private void cargarComboBoxEmpresa() {
+        comboDC.removeAllItems();
+        final DefaultComboBoxModel modeloEmpresas = new DefaultComboBoxModel();
+        int i = 0;
+        String cbe = sistema.listadoComboBoxEmpresa();
+        String[] split = cbe.split("-"); 
+        String s = "";
+
+        for (String j : split) { 
+                modeloEmpresas.addElement(new ItemComboBox(j,i));
+                i ++ ;
+        }   
+        
+        comboDC.setModel(modeloEmpresas);
+    }
+    
+    
     private void capturarEventos(){
         //ObjStatusBar=new EventsStatusBar(this.jPanel5);
         recorrerComponentes(jTabbedPane1.getComponents());
@@ -139,7 +198,7 @@ public class MainFrame extends javax.swing.JFrame {
         String[] columnas=new String[6];
         columnas[0]="Número";columnas[1]="Hora";columnas[2]="Status";columnas[3]="URL";columnas[4]="Información";columnas[5]="Excepción";
         TableModel tableModel=new DefaultTableModel(peticiones, columnas);
-       this.jTable_Peticiones.setModel(tableModel);
+       //this.jTable_Peticiones.setModel(tableModel);
     }
     
     
@@ -204,37 +263,37 @@ public class MainFrame extends javax.swing.JFrame {
 
         }
     }
-    private Route.avoids seleccionarRestricciones(){
-        Route.avoids avoid= Route.avoids.nothing;
-        switch(JCombo_Ruta_Restricc.getSelectedItem().toString()){
-            case "Ninguna":
-                avoid= Route.avoids.nothing;
-                break;
-            case "Peajes":
-                avoid=Route.avoids.tolls;
-                break;
-            case "Autopistas/autovías":
-                avoid=Route.avoids.highways;
-                break;
-        }
-        return avoid;
-    }
-    
-    private Route.mode seleccionarModoRuta(){
-        Route.mode modo= Route.mode.driving;
-        switch(JCombo_Ruta_Trasnpo.getSelectedItem().toString()){
-            case "Coche":
-                modo= Route.mode.driving;
-                break;
-            case "Andando":
-                modo=Route.mode.walking;
-                break;
-            case "Bicicleta":
-                modo=Route.mode.bicycling;
-                break;
-        }
-        return modo;
-    }
+//    private Route.avoids seleccionarRestricciones(){
+//        Route.avoids avoid= Route.avoids.nothing;
+//        switch(JCombo_Ruta_Restricc.getSelectedItem().toString()){
+//            case "Ninguna":
+//                avoid= Route.avoids.nothing;
+//                break;
+//            case "Peajes":
+//                avoid=Route.avoids.tolls;
+//                break;
+//            case "Autopistas/autovías":
+//                avoid=Route.avoids.highways;
+//                break;
+//        }
+//        return avoid;
+//    }
+//    
+//    private Route.mode seleccionarModoRuta(){
+//        Route.mode modo= Route.mode.driving;
+//        switch(JCombo_Ruta_Trasnpo.getSelectedItem().toString()){
+//            case "Coche":
+//                modo= Route.mode.driving;
+//                break;
+//            case "Andando":
+//                modo=Route.mode.walking;
+//                break;
+//            case "Bicicleta":
+//                modo=Route.mode.bicycling;
+//                break;
+//        }
+//        return modo;
+//    }
 //    private StaticMaps.Format seleccionarFormato(){
         //StaticMaps.Format formato= StaticMaps.Format.png;
 //        switch(JCombo_ME_Formato.getSelectedItem().toString()){
@@ -510,34 +569,24 @@ public class MainFrame extends javax.swing.JFrame {
         registrarDC = new javax.swing.JButton();
         txtCapaciDC = new javax.swing.JTextField();
         jScrollPane8 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        comboEmpresa = new javax.swing.JComboBox();
+        consolaDC = new javax.swing.JTextArea();
+        comboDC = new javax.swing.JComboBox();
         jButton2 = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
-        jButton_Peticiones1 = new javax.swing.JButton();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        jTable_Ruta_Tramos = new javax.swing.JTable();
         jLabel19 = new javax.swing.JLabel();
-        JText_Ruta_DirecOrigen = new javax.swing.JTextField();
-        JText_Ruta_DirecDestin = new javax.swing.JTextField();
         jLabel20 = new javax.swing.JLabel();
-        jLabel21 = new javax.swing.JLabel();
-        JCombo_Ruta_Restricc = new javax.swing.JComboBox();
-        jLabel22 = new javax.swing.JLabel();
-        JCombo_Ruta_Trasnpo = new javax.swing.JComboBox();
-        JText_Ruta_Hito = new javax.swing.JTextField();
-        jCheckBox_Ruta_Hito = new javax.swing.JCheckBox();
-        jLabel25 = new javax.swing.JLabel();
-        jLabel26 = new javax.swing.JLabel();
-        JText_Ruta_Tiempo = new javax.swing.JTextField();
-        JText_Ruta_Distancia = new javax.swing.JTextField();
-        JLabel_Ruta_Copyright = new javax.swing.JLabel();
-        JLabel_Ruta_Resumen = new javax.swing.JLabel();
+        txtPeso = new javax.swing.JTextField();
         JLabel_Ruta_Status = new javax.swing.JLabel();
+        jLabel28 = new javax.swing.JLabel();
+        jLabel29 = new javax.swing.JLabel();
+        comboOrigen = new javax.swing.JComboBox();
+        comboDestino = new javax.swing.JComboBox();
+        elimTramo = new javax.swing.JButton();
+        bottonTramo = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        consolaTramo = new javax.swing.JTextArea();
         jPanel3 = new javax.swing.JPanel();
         jButton_Peticiones = new javax.swing.JButton();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTable_Peticiones = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Java Mapas");
@@ -929,15 +978,11 @@ public class MainFrame extends javax.swing.JFrame {
 
         jLabel23.setText("Empresa");
 
-        txtNombreDC.setEditable(false);
-
         jLabel24.setText("Capacidad de CPU por Hora");
 
         JText_CD_Long1.setEditable(false);
 
         jLabel27.setText("Costo CPU por Hora");
-
-        txtCostoDC.setEditable(false);
 
         registrarDC.setText("Agregar Data Center");
         registrarDC.addActionListener(new java.awt.event.ActionListener() {
@@ -946,20 +991,23 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        txtCapaciDC.setEditable(false);
+        consolaDC.setColumns(20);
+        consolaDC.setRows(5);
+        jScrollPane8.setViewportView(consolaDC);
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane8.setViewportView(jTextArea1);
-
-        comboEmpresa.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        comboEmpresa.addActionListener(new java.awt.event.ActionListener() {
+        comboDC.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        comboDC.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                comboEmpresaActionPerformed(evt);
+                comboDCActionPerformed(evt);
             }
         });
 
         jButton2.setText("Eliminar Data Center");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -991,14 +1039,15 @@ public class MainFrame extends javax.swing.JFrame {
                                         .addComponent(JText_CD_Lati1))
                                     .addGap(55, 55, 55)))
                             .addGroup(jPanel7Layout.createSequentialGroup()
-                                .addComponent(jLabel17)
-                                .addGap(207, 207, 207))
-                            .addComponent(registrarDC, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel17)
+                                    .addComponent(registrarDC, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(55, 55, 55)))
                         .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel23)
                             .addComponent(jLabel27)
                             .addComponent(txtCostoDC)
-                            .addComponent(comboEmpresa, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(comboDC, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(txtNombreDC)
                             .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 189, Short.MAX_VALUE)))
                     .addComponent(jScrollPane8))
@@ -1030,7 +1079,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(JText_CD_Long1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(comboEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(comboDC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel27)
@@ -1051,206 +1100,113 @@ public class MainFrame extends javax.swing.JFrame {
         jTabbedPane1.addTab("Data Center", jPanel7);
         jPanel7.getAccessibleContext().setAccessibleName("Principal");
 
-        jButton_Peticiones1.setBackground(new java.awt.Color(153, 153, 255));
-        jButton_Peticiones1.setText("Calcular");
-        jButton_Peticiones1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton_Peticiones1ActionPerformed(evt);
-            }
-        });
+        jLabel19.setText("Dirección de origen");
 
-        jTable_Ruta_Tramos.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null}
-            },
-            new String [] {
-                "Duración tramo", "Distancia tramo", "Indicaciones", "Latitud", "Longitud"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane3.setViewportView(jTable_Ruta_Tramos);
-        jTable_Ruta_Tramos.getAccessibleContext().setAccessibleName("indicacionesRuta");
-
-        jLabel19.setText("Dirección origen");
-
-        jLabel20.setText("Dirección destino");
-
-        jLabel21.setText("Restricciones carretera");
-
-        JCombo_Ruta_Restricc.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Ninguna", "Peajes", "Autopistas/autovías" }));
-
-        jLabel22.setText("Tipo transporte");
-
-        JCombo_Ruta_Trasnpo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Coche", "Andando", "Bicicleta" }));
-
-        jCheckBox_Ruta_Hito.setText("Hito intermedio");
-
-        jLabel25.setText("Tiempo total (horas)");
-
-        jLabel26.setText("Distancia total (km)");
-
-        JText_Ruta_Tiempo.setEditable(false);
-
-        JText_Ruta_Distancia.setEditable(false);
-
-        JLabel_Ruta_Copyright.setFont(new java.awt.Font("Tahoma", 0, 9)); // NOI18N
-        JLabel_Ruta_Copyright.setText("Copyright");
-
-        JLabel_Ruta_Resumen.setFont(new java.awt.Font("Tahoma", 0, 9)); // NOI18N
-        JLabel_Ruta_Resumen.setText("Resumen");
+        jLabel20.setText("Dirección de destino");
 
         JLabel_Ruta_Status.setFont(new java.awt.Font("Tahoma", 0, 8)); // NOI18N
+
+        jLabel28.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel28.setText("Registrar Tramo");
+
+        jLabel29.setText("Peso");
+
+        comboOrigen.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        comboDestino.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        comboDestino.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboDestinoActionPerformed(evt);
+            }
+        });
+
+        elimTramo.setText("Eliminar Tramo");
+        elimTramo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                elimTramoActionPerformed(evt);
+            }
+        });
+
+        bottonTramo.setText("Registrar Tramo");
+        bottonTramo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bottonTramoActionPerformed(evt);
+            }
+        });
+
+        consolaTramo.setColumns(20);
+        consolaTramo.setRows(5);
+        jScrollPane3.setViewportView(consolaTramo);
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGap(89, 89, 89)
+                .addComponent(bottonTramo)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 90, Short.MAX_VALUE)
+                .addComponent(elimTramo)
+                .addGap(84, 84, 84))
+            .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton_Peticiones1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane3)
-                    .addComponent(JText_Ruta_DirecOrigen)
-                    .addComponent(JText_Ruta_DirecDestin)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel19)
+                    .addComponent(JLabel_Ruta_Status)
+                    .addComponent(jLabel28)
+                    .addComponent(jLabel20)
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(jCheckBox_Ruta_Hito)
+                        .addComponent(jLabel29)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(JText_Ruta_Hito))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel19)
-                            .addComponent(jLabel20)
-                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addComponent(jLabel21)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(JCombo_Ruta_Restricc, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel22)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(JCombo_Ruta_Trasnpo, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addComponent(jLabel25)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(JText_Ruta_Tiempo, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel26)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(JText_Ruta_Distancia, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(JLabel_Ruta_Copyright)
-                            .addComponent(JLabel_Ruta_Resumen)
-                            .addComponent(JLabel_Ruta_Status))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addComponent(txtPeso, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(comboOrigen, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(comboDestino, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 438, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(9, 9, 9)
+                .addComponent(jLabel28)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(JText_Ruta_DirecOrigen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(comboOrigen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(JText_Ruta_DirecDestin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(JCombo_Ruta_Trasnpo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(JCombo_Ruta_Restricc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(comboDestino, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jCheckBox_Ruta_Hito)
-                    .addComponent(JText_Ruta_Hito, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(6, 6, 6)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel29)
+                    .addComponent(txtPeso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(7, 7, 7)
                 .addComponent(JLabel_Ruta_Status)
-                .addGap(1, 1, 1)
-                .addComponent(jButton_Peticiones1)
-                .addGap(21, 21, 21)
+                .addGap(20, 20, 20)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel26, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(JText_Ruta_Tiempo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(JText_Ruta_Distancia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(JLabel_Ruta_Copyright)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(JLabel_Ruta_Resumen)
-                .addGap(12, 12, 12)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE)
-                .addContainerGap())
+                    .addComponent(bottonTramo)
+                    .addComponent(elimTramo))
+                .addGap(46, 46, 46)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(46, Short.MAX_VALUE))
         );
 
-        jButton_Peticiones1.getAccessibleContext().setAccessibleName("calculaRuta");
         jLabel19.getAccessibleContext().setAccessibleName("direccionOrigen");
-        JText_Ruta_DirecOrigen.getAccessibleContext().setAccessibleName("direccionOrigen");
-        JText_Ruta_DirecDestin.getAccessibleContext().setAccessibleName("direccionDestino");
         jLabel20.getAccessibleContext().setAccessibleName("direccionDestino");
-        jLabel21.getAccessibleContext().setAccessibleName("restriccionCarreteras");
-        JCombo_Ruta_Restricc.getAccessibleContext().setAccessibleName("restriccionCarreteras");
-        jLabel22.getAccessibleContext().setAccessibleName("tipoTransporte");
-        JCombo_Ruta_Trasnpo.getAccessibleContext().setAccessibleName("tipoTransporte");
-        JText_Ruta_Hito.getAccessibleContext().setAccessibleName("hito");
-        jCheckBox_Ruta_Hito.getAccessibleContext().setAccessibleName("hito");
-        jLabel25.getAccessibleContext().setAccessibleName("tiempoTotal");
-        jLabel26.getAccessibleContext().setAccessibleName("distanciaTotal");
-        JText_Ruta_Tiempo.getAccessibleContext().setAccessibleName("tiempoTotal");
-        JText_Ruta_Distancia.getAccessibleContext().setAccessibleName("distanciaTotal");
-        JLabel_Ruta_Copyright.getAccessibleContext().setAccessibleName("copyright");
-        JLabel_Ruta_Resumen.getAccessibleContext().setAccessibleName("resumen");
+        txtPeso.getAccessibleContext().setAccessibleName("hito");
         JLabel_Ruta_Status.getAccessibleContext().setAccessibleName("status");
 
         jTabbedPane1.addTab("Tramo", jPanel6);
         jPanel6.getAccessibleContext().setAccessibleName("Principal");
 
         jButton_Peticiones.setBackground(new java.awt.Color(153, 153, 255));
-        jButton_Peticiones.setText("Mostrar peticiones");
+        jButton_Peticiones.setText("Mostrar Mapa");
         jButton_Peticiones.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton_PeticionesActionPerformed(evt);
             }
         });
-
-        jTable_Peticiones.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null}
-            },
-            new String [] {
-                "Número", "Hora", "Status", "URL", "Información", "Excepción"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane2.setViewportView(jTable_Peticiones);
-        jTable_Peticiones.getAccessibleContext().setAccessibleName("peticiones");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -1258,9 +1214,7 @@ public class MainFrame extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(jButton_Peticiones, javax.swing.GroupLayout.DEFAULT_SIZE, 444, Short.MAX_VALUE))
+                .addComponent(jButton_Peticiones, javax.swing.GroupLayout.DEFAULT_SIZE, 444, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -1268,9 +1222,7 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(17, 17, 17)
                 .addComponent(jButton_Peticiones)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 341, Short.MAX_VALUE)
-                .addContainerGap())
+                .addContainerGap(363, Short.MAX_VALUE))
         );
 
         jButton_Peticiones.getAccessibleContext().setAccessibleName("mostrPeticiones");
@@ -1326,15 +1278,9 @@ public class MainFrame extends javax.swing.JFrame {
     
     private void IniciarSistemaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IniciarSistemaActionPerformed
         consolaSistema.setText(Sistema.inicializarSistema(Integer.parseInt(txtSistema.getText())).resultado.toString());
+        cargarComboBoxColores();
     }//GEN-LAST:event_IniciarSistemaActionPerformed
                                            
-
-    private void jButton_Peticiones1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_Peticiones1ActionPerformed
-//        try {
-//            crearRuta();
-//        } catch (Exception ex) {
-//        }
-    }//GEN-LAST:event_jButton_Peticiones1ActionPerformed
        
     private void seleccionarReferencia(){
 //        if(jTable_Pl_places.getRowCount()>0){
@@ -1357,10 +1303,12 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void agregarCiudadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarCiudadActionPerformed
        consolaCiudad.setText(Sistema.registrarCiudad(JText_CD_Direc.getText(),Double.parseDouble(JText_CD_Lati.getText()),Double.parseDouble(JText_CD_Long.getText())).resultado.toString());
+       cargarComboBoxPuntos();
     }//GEN-LAST:event_agregarCiudadActionPerformed
 
     private void eliminarCiudadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarCiudadActionPerformed
-        //Codigo de Eliminar Ciudad
+       consolaCiudad.setText(sistema.eliminarPunto(Double.parseDouble(JText_CD_Lati.getText()),Double.parseDouble(JText_CD_Long.getText())).resultado.toString());
+       cargarComboBoxPuntos();
     }//GEN-LAST:event_eliminarCiudadActionPerformed
 
     private void agregarEmpresaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarEmpresaActionPerformed
@@ -1368,7 +1316,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_agregarEmpresaActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        consolaEmpresa.setText(Sistema.listadoEmpresas().valorString);
+        consolaEmpresa.setText(Sistema.magico().toString());
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void JText_CD_Lati1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JText_CD_Lati1ActionPerformed
@@ -1385,16 +1333,38 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_buscarCiudadDCActionPerformed
 
     private void registrarDCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registrarDCActionPerformed
-        jTextArea1.setText(Sistema.registrarDC(txtNombreDC.getText(),Double.parseDouble(JText_CD_Lati1.getText()), Double.parseDouble(JText_CD_Long1.getText()),comboEmpresa.getSelectedItem().toString(),Integer.parseInt(txtCapaciDC.getText()),Integer.parseInt(txtCostoDC.getText())).resultado.toString());
+        consolaDC.setText(Sistema.registrarDC(txtNombreDC.getText(),Double.parseDouble(JText_CD_Lati1.getText()), Double.parseDouble(JText_CD_Long1.getText()),comboDC.getSelectedItem().toString(),Integer.parseInt(txtCapaciDC.getText()),Integer.parseInt(txtCostoDC.getText())).resultado.toString());
+        cargarComboBoxPuntos();
     }//GEN-LAST:event_registrarDCActionPerformed
 
     private void empresaColorComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_empresaColorComboActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_empresaColorComboActionPerformed
 
-    private void comboEmpresaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboEmpresaActionPerformed
+    private void comboDCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboDCActionPerformed
        
-    }//GEN-LAST:event_comboEmpresaActionPerformed
+    }//GEN-LAST:event_comboDCActionPerformed
+
+    private void comboDestinoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboDestinoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comboDestinoActionPerformed
+
+    private void elimTramoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_elimTramoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_elimTramoActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        consolaDC.setText(sistema.eliminarPunto(Double.parseDouble(JText_CD_Lati1.getText()),Double.parseDouble(JText_CD_Long1.getText())).resultado.toString());
+        cargarComboBoxPuntos();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void bottonTramoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bottonTramoActionPerformed
+        Object obj1 = comboOrigen.getSelectedItem();
+        int value1 = ((ItemComboBox) obj1).getValue();
+        Object obj2 = comboDestino.getSelectedItem();
+        int value2 = ((ItemComboBox) obj2).getValue();
+        //consolaTramo.setText(Sistema.registrarTramo(value1,value2,Integer.parseInt(txtPeso.getText())).resultado.toString());
+    }//GEN-LAST:event_bottonTramoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1434,13 +1404,9 @@ public class MainFrame extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton IniciarSistema;
-    private javax.swing.JComboBox JCombo_Ruta_Restricc;
-    private javax.swing.JComboBox JCombo_Ruta_Trasnpo;
     private javax.swing.JLabel JLabel_CD_Status;
     private javax.swing.JLabel JLabel_CI_Status;
     private javax.swing.JLabel JLabel_Clave;
-    private javax.swing.JLabel JLabel_Ruta_Copyright;
-    private javax.swing.JLabel JLabel_Ruta_Resumen;
     private javax.swing.JLabel JLabel_Ruta_Status;
     private javax.swing.JButton JText_CD_Buscar;
     private javax.swing.JTextField JText_CD_DireEnc;
@@ -1449,26 +1415,25 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTextField JText_CD_Lati1;
     private javax.swing.JTextField JText_CD_Long;
     private javax.swing.JTextField JText_CD_Long1;
-    private javax.swing.JTextField JText_Ruta_DirecDestin;
-    private javax.swing.JTextField JText_Ruta_DirecOrigen;
-    private javax.swing.JTextField JText_Ruta_Distancia;
-    private javax.swing.JTextField JText_Ruta_Hito;
-    private javax.swing.JTextField JText_Ruta_Tiempo;
     private javax.swing.JButton agregarCiudad;
     private javax.swing.JButton agregarEmpresa;
+    private javax.swing.JButton bottonTramo;
     private javax.swing.JButton buscarCiudadDC;
-    private javax.swing.JComboBox comboEmpresa;
+    private javax.swing.JComboBox comboDC;
+    private javax.swing.JComboBox comboDestino;
+    private javax.swing.JComboBox comboOrigen;
     private javax.swing.JTextArea consolaCiudad;
+    private javax.swing.JTextArea consolaDC;
     private javax.swing.JTextArea consolaEmpresa;
     private javax.swing.JTextArea consolaSistema;
+    private javax.swing.JTextArea consolaTramo;
     private javax.swing.JButton destruirSistema;
+    private javax.swing.JButton elimTramo;
     private javax.swing.JButton eliminarCiudad;
     private javax.swing.JComboBox empresaColorCombo;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton_Peticiones;
-    private javax.swing.JButton jButton_Peticiones1;
-    private javax.swing.JCheckBox jCheckBox_Ruta_Hito;
     private javax.swing.JColorChooser jColorChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -1483,13 +1448,11 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
-    private javax.swing.JLabel jLabel21;
-    private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
-    private javax.swing.JLabel jLabel25;
-    private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel28;
+    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -1504,15 +1467,11 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable_Peticiones;
-    private javax.swing.JTable jTable_Ruta_Tramos;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JButton registrarDC;
     private javax.swing.JTextField txtCapaciDC;
@@ -1522,6 +1481,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtNombreDC;
     private javax.swing.JTextField txtPais;
+    private javax.swing.JTextField txtPeso;
     private javax.swing.JTextField txtSistema;
     // End of variables declaration//GEN-END:variables
 }
