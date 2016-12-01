@@ -17,12 +17,10 @@ public interface ISistema {
 	Retorno registrarDC(String nombre, Double coordX, Double coordY,
 			String empresa, int capacidadCPUenHoras, int costoCPUporHora);
 	
-	Retorno registrarTramo(Double coordXi, Double coordYi, Double
-			coordXf, Double coordYf, int peso);
-	
 	Retorno eliminarTramo(Double coordXi, Double coordYi, Double
 			coordXf, Double coordYf);
-	
+        Punto PuntoXposicion(int i);
+        
 	Retorno eliminarPunto(Double coordX, Double coordY);
 	
 	Retorno mapaEstado();
@@ -35,6 +33,16 @@ public interface ISistema {
 	Retorno listadoEmpresas();
 
     public Object magico();
+
+    public Ciudad darCiudad(double x, double y);
+
+    public Punto[] getCantPuntos();
+
+    public String listadoComboBoxEmpresa();
+
+    public DataCenter darDataCenter(double x, double y);
+
+    public Retorno registrarTramo(int origen, int destino, int parseInt);
 	
 	
 	

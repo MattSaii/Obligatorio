@@ -6,6 +6,17 @@ public class DataCenter extends Punto{
     public String nombre;
     public int capacidadCPUenHoras;
     public int costoCPUxHora;
+    public boolean estado;
+
+    public boolean isEstado() {
+        return estado;
+    }
+
+    public void setEstado(boolean estado) {
+        this.estado = estado;
+    }
+    
+    
 
     public Empresa getEmpresaPropietaria() {
         return empresaPropietaria;
